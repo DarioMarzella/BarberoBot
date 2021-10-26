@@ -16,6 +16,8 @@ import pafy
 from discord import FFmpegPCMAudio, PCMVolumeTransformer
 import nacl
 
+from utils import parse_soundboard
+
 
 FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options': '-vn'}
 
@@ -25,6 +27,7 @@ GUILD = os.getenv('DISCORD_GUILD')
 SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
 SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 PAFY_BACKEND = "internal"
+soundboard = parse_soundboard()
 
 client = discord.Client()
 
@@ -56,70 +59,132 @@ async def on_member_join(member):
 @client.event
 async def on_message(message):
     if message.author == client.user:
-        return
+         return
 
-    brooklyn_99_quotes = [
-        'I\'m the human form of the 💯 emoji.',
-        'Bingpot!',
-        (
-            'Cool. Cool cool cool cool cool cool cool, '
-            'no doubt no doubt no doubt no doubt.'
-        ),
-        'Terry loves yogurt!'
-    ]
+    for guild in client.guilds:
+        if guild.name == GUILD:
+            break
 
-    if message.content == '99!':
-        response = random.choice(brooklyn_99_quotes)
+    for quote in soundboard:
+        if message.content == quote:
+            if os.path.isfile('.'+soundboard[quote]['mp3']):
+                pass
+            else:
+                os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
+
+            if message.author.voice == None:
+                await message.channel.send(embed=Embeds.txt("No Voice Channel", "You need to be in a voice channel to use this command!", author))
+                return
+
+            channel = message.author.voice.channel
+
+            voice = discord.utils.get(guild.voice_channels, name=channel.name)
+
+            voice_client = discord.utils.get(client.voice_clients, guild=guild)
+
+            if voice_client == None:
+                voice_client = await voice.connect()
+            else:
+                await voice_client.move_to(channel)
+
+            player = guild.voice_client
+            player.play(FFmpegPCMAudio('.'+soundboard[quote]['mp3']))
+
+    if message.content == 'Barbacitazioni':
+        response = 'Buongiorno! Grazie per avermi invitato. Oggi posso deliziarvi con queste citazioni:\n' + ('\n').join(list(soundboard.keys()))
         await message.channel.send(response)
 
-    elif message.content == 'Spranga!':
-        response = 'http://www.spranga.xyz'
-        await message.channel.send(response)
+    elif message.content == 'Sorgente':
+         response = 'http://www.spranga.xyz'
+         await message.channel.send(response)
 
-    elif message.content == 'Podcast!':
-        search_str = 'Il Podcast di Alessandro Barbero'
-        response = sp.search(search_str)
-        await message.channel.send(response)
-
-    elif message.content == 'test_play':
-        for guild in client.guilds:
-            if guild.name == GUILD:
-                break
-        if message.author.voice == None:
-            await message.channel.send(embed=Embeds.txt("No Voice Channel", "You need to be in a voice channel to use this command!", author))
-            return
-
-        channel = message.author.voice.channel
-
-        voice = discord.utils.get(guild.voice_channels, name=channel.name)
-
-        voice_client = discord.utils.get(client.voice_clients, guild=guild)
-
-        if voice_client == None:
-            voice_client = await voice.connect()
-        else:
-            await voice_client.move_to(channel)
-
-        #search = search.replace(" ", "+")
-
-        #html = urllib.request.urlopen("https://www.youtube.com/results?search_query=" + search)
-        #video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
-
-
-        #await message.channel.send("https://spranga.xyz/sounds/pestifero.mp3")
-
-        #song = pafy.new("https://spranga.xyz/sounds/pestifero.mp3")  # creates a new pafy object
-
-        #audio = song.getbestaudio()  # gets an audio source
-
-        #source = FFmpegPCMAudio(song.url, **FFMPEG_OPTIONS)  # converts the youtube audio source into a source discord can use
-
-        # json = 'spranga.xyz/soundboard.json'
-        #os.popen('wget https://spranga.xyz/sounds/pestifero.mp3').read()
-        player = guild.voice_client
-        player.play(FFmpegPCMAudio("pestifero.mp3"))
-        #os.popen('rm pestifero.mp3').read()
-        #voice_client.play(source)  # play the source
+    # if message.author == client.user:
+    #     return
+    #
+    # brooklyn_99_quotes = [
+    #     'I\'m the human form of the 💯 emoji.',
+    #     'Bingpot!',
+    #     (
+    #         'Cool. Cool cool cool cool cool cool cool, '
+    #         'no doubt no doubt no doubt no doubt.'
+    #     ),
+    #     'Terry loves yogurt!'
+    # ]
+    #
+    # if message.content == '99!':
+    #     response = random.choice(brooklyn_99_quotes)
+    #     await message.channel.send(response)
+    #
+    # elif message.content == 'Spranga!':
+    #     response = 'http://www.spranga.xyz'
+    #     await message.channel.send(response)
+    #
+    # elif message.content == 'Podcast!':
+    #     search_str = 'Il Podcast di Alessandro Barbero'
+    #     response = sp.search(search_str)
+    #     await message.channel.send(response)
+    #
+    # elif message.content == 'pestifero':
+    #     for guild in client.guilds:
+    #         if guild.name == GUILD:
+    #             break
+    #     if message.author.voice == None:
+    #         await message.channel.send(embed=Embeds.txt("No Voice Channel", "You need to be in a voice channel to use this command!", author))
+    #         return
+    #
+    #     channel = message.author.voice.channel
+    #
+    #     voice = discord.utils.get(guild.voice_channels, name=channel.name)
+    #
+    #     voice_client = discord.utils.get(client.voice_clients, guild=guild)
+    #
+    #     if voice_client == None:
+    #         voice_client = await voice.connect()
+    #     else:
+    #         await voice_client.move_to(channel)
+    #
+    #     #search = search.replace(" ", "+")
+    #
+    #     #html = urllib.request.urlopen("https://www.youtube.com/results?search_query=" + search)
+    #     #video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+    #
+    #
+    #     #await message.channel.send("https://spranga.xyz/sounds/pestifero.mp3")
+    #
+    #     #song = pafy.new("https://spranga.xyz/sounds/pestifero.mp3")  # creates a new pafy object
+    #
+    #     #audio = song.getbestaudio()  # gets an audio source
+    #
+    #     #source = FFmpegPCMAudio(song.url, **FFMPEG_OPTIONS)  # converts the youtube audio source into a source discord can use
+    #
+    #     # json = 'spranga.xyz/soundboard.json'
+    #     #os.popen('wget https://spranga.xyz/sounds/pestifero.mp3').read()
+    #     player = guild.voice_client
+    #     player.play(FFmpegPCMAudio("sounds/pestifero.mp3"))
+    #     #os.popen('rm pestifero.mp3').read()
+    #     #voice_client.play(source)  # play the source
+    #
+    # elif message.content == 'spranga':
+    #     for guild in client.guilds:
+    #         if guild.name == GUILD:
+    #             break
+    #     if message.author.voice == None:
+    #         await message.channel.send(embed=Embeds.txt("No Voice Channel", "You need to be in a voice channel to use this command!", author))
+    #         return
+    #
+    #     channel = message.author.voice.channel
+    #
+    #     voice = discord.utils.get(guild.voice_channels, name=channel.name)
+    #
+    #     voice_client = discord.utils.get(client.voice_clients, guild=guild)
+    #
+    #     if voice_client == None:
+    #         voice_client = await voice.connect()
+    #     else:
+    #         await voice_client.move_to(channel)
+    #
+    #     player = guild.voice_client
+    #     player.play(FFmpegPCMAudio("sounds/spranga.mp3"))
 
 # @client.event
 # async def test(self, ctx):
