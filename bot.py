@@ -66,9 +66,10 @@ async def on_message(message):
     if message.author == client.user:
          return
 
-    for guild in client.guilds:
-        if guild.name == message.guild:
-            break
+    #for guild in client.guilds:
+    #    if guild.name == message.guild:
+    #        break
+    guild = message.guild
 
     if message.content == 'Barbacitazioni':
         response = 'Buongiorno! Grazie per avermi invitato. Oggi posso deliziarvi con queste citazioni:\n' + ('\n').join(list(soundboard.keys()))
