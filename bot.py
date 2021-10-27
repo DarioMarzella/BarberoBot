@@ -8,13 +8,13 @@ from dotenv import load_dotenv
 
 import random
 
-from spotipy.oauth2 import SpotifyClientCredentials
-import spotipy
+#from spotipy.oauth2 import SpotifyClientCredentials
+#import spotipy
 from pprint import pprint
 
-import pafy
-from discord import FFmpegPCMAudio, PCMVolumeTransformer
-import nacl
+#import pafy
+from discord import FFmpegPCMAudio#, PCMVolumeTransformer
+#import nacl
 
 from utils import parse_soundboard
 
@@ -24,15 +24,15 @@ FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconne
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
-SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
+#SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
+#SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 PAFY_BACKEND = "internal"
 soundboard = parse_soundboard()
 
 client = discord.Client()
 
-client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
-sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+#client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
+#sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 #Create sounds folder if not present
 if not os.path.isdir('./sounds/'):
