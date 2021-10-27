@@ -79,32 +79,60 @@ async def on_message(message):
          response = 'http://www.spranga.xyz'
          await message.channel.send(response)
 
-    for quote in soundboard:
-        if message.content == quote:
-            if os.path.isfile('.'+soundboard[quote]['mp3']):
-                pass
-            else:
-                os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
+    elif message.content == 'Stupiscimi':
+        quote = random.choice(list(soundboard.keys()))
+        if os.path.isfile('.'+soundboard[quote]['mp3']):
+            pass
+        else:
+            os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
 
-            if message.author.voice == None:
-                await message.channel.send(embed=Embeds.txt("No Voice Channel",
-                            "You need to be in a voice channel to use this command!", author))
-                return
+        if message.author.voice == None:
+            await message.channel.send(embed=Embeds.txt("No Voice Channel",
+                        "You need to be in a voice channel to use this command!", author))
+            return
 
-            channel = message.author.voice.channel
+        channel = message.author.voice.channel
 
-            voice = discord.utils.get(guild.voice_channels, name=channel.name)
+        voice = discord.utils.get(guild.voice_channels, name=channel.name)
 
-            voice_client = discord.utils.get(client.voice_clients, guild=guild)
+        voice_client = discord.utils.get(client.voice_clients, guild=guild)
 
-            if voice_client == None:
-                voice_client = await voice.connect()
-            else:
-                await voice_client.move_to(channel)
+        if voice_client == None:
+            voice_client = await voice.connect()
+        else:
+            await voice_client.move_to(channel)
 
-            player = guild.voice_client
-            player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'],
-                        executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
+        player = guild.voice_client
+        player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'],
+                    executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
+
+    else:
+        for quote in soundboard:
+            if message.content == quote:
+                if os.path.isfile('.'+soundboard[quote]['mp3']):
+                    pass
+                else:
+                    os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
+
+                if message.author.voice == None:
+                    await message.channel.send(embed=Embeds.txt("No Voice Channel",
+                                "You need to be in a voice channel to use this command!", author))
+                    return
+
+                channel = message.author.voice.channel
+
+                voice = discord.utils.get(guild.voice_channels, name=channel.name)
+
+                voice_client = discord.utils.get(client.voice_clients, guild=guild)
+
+                if voice_client == None:
+                    voice_client = await voice.connect()
+                else:
+                    await voice_client.move_to(channel)
+
+                player = guild.voice_client
+                player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'],
+                            executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
 
 
 
