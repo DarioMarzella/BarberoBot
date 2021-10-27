@@ -34,6 +34,11 @@ client = discord.Client()
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+#Create sounds folder if not present
+if not os.path.isdir('./sounds/'):
+    os.system('mkdir sounds')
+
+
 @client.event
 async def on_ready():
     for guild in client.guilds:
