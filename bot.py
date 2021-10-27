@@ -93,7 +93,7 @@ async def on_message(message):
                 await voice_client.move_to(channel)
 
             player = guild.voice_client
-            player.play(FFmpegPCMAudio('.'+soundboard[quote]['mp3']))
+            player.play(FFmpegPCMAudio('.'+soundboard[quote]['mp3'], executable='./ffmpeg'))
 
     if message.content == 'Barbacitazioni':
         response = 'Buongiorno! Grazie per avermi invitato. Oggi posso deliziarvi con queste citazioni:\n' + ('\n').join(list(soundboard.keys()))
