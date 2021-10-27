@@ -67,8 +67,16 @@ async def on_message(message):
          return
 
     for guild in client.guilds:
-        if guild.name == GUILD:
+        if guild.name == message.guild:
             break
+
+    if message.content == 'Barbacitazioni':
+        response = 'Buongiorno! Grazie per avermi invitato. Oggi posso deliziarvi con queste citazioni:\n' + ('\n').join(list(soundboard.keys()))
+        await message.channel.send(response)
+
+    elif message.content == 'Sorgente':
+         response = 'http://www.spranga.xyz'
+         await message.channel.send(response)
 
     for quote in soundboard:
         if message.content == quote:
@@ -78,7 +86,8 @@ async def on_message(message):
                 os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
 
             if message.author.voice == None:
-                await message.channel.send(embed=Embeds.txt("No Voice Channel", "You need to be in a voice channel to use this command!", author))
+                await message.channel.send(embed=Embeds.txt("No Voice Channel",
+                            "You need to be in a voice channel to use this command!", author))
                 return
 
             channel = message.author.voice.channel
@@ -93,15 +102,10 @@ async def on_message(message):
                 await voice_client.move_to(channel)
 
             player = guild.voice_client
-            player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'], executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
+            player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'],
+                        executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
 
-    if message.content == 'Barbacitazioni':
-        response = 'Buongiorno! Grazie per avermi invitato. Oggi posso deliziarvi con queste citazioni:\n' + ('\n').join(list(soundboard.keys()))
-        await message.channel.send(response)
 
-    elif message.content == 'Sorgente':
-         response = 'http://www.spranga.xyz'
-         await message.channel.send(response)
 
     # if message.author == client.user:
     #     return
