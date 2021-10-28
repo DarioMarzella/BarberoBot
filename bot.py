@@ -99,9 +99,7 @@ async def on_message(message):
             return
 
         channel = message.author.voice.channel
-
         voice = discord.utils.get(guild.voice_channels, name=channel.name)
-
         voice_client = discord.utils.get(client.voice_clients, guild=guild)
 
         if voice_client == None:
@@ -141,6 +139,9 @@ async def on_message(message):
                 player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'],
                             executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
 
+                while player.is_playing():
+                    await sleep(180) #wait 3 minutes
+                await player.disconnect()
 
 
     # if message.author == client.user:
