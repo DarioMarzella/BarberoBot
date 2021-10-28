@@ -77,7 +77,7 @@ async def on_message(message):
         await message.channel.send(response)
 
     elif message.content == 'Sorgente':
-         response = ('\n').join(['http://www.spranga.xyz', 'https://open.spotify.com/show/2G4tqGffDNWKTU5oYQRg1W?si=igjblhTlS_qKwZ2CCjPeKQ'])
+         response = ('\n').join(['Citazioni: http://www.spranga.xyz', 'Podcast: https://open.spotify.com/show/2G4tqGffDNWKTU5oYQRg1W?si=igjblhTlS_qKwZ2CCjPeKQ'])
          await message.channel.send(response)
 
     elif message.content == 'Disconnetti':
