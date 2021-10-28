@@ -55,7 +55,7 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-    if member.guild == GUILD
+    if member.guild == GUILD:
         await member.create_dm()
         await member.dm_channel.send(
             f'Hi {member.name}, welcome to my Discord server! Here we play Minecraft, other silly games and we watch Nine-Nine!'
