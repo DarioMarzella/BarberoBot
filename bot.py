@@ -55,9 +55,10 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server! Here we play Minecraft, other silly games and we watch Nine-Nine!'
+    if member.guild = GUILD
+        await member.create_dm()
+        await member.dm_channel.send(
+            f'Hi {member.name}, welcome to my Discord server! Here we play Minecraft, other silly games and we watch Nine-Nine!'
     )
 
 
@@ -78,6 +79,12 @@ async def on_message(message):
     elif message.content == 'Sorgente':
          response = 'http://www.spranga.xyz'
          await message.channel.send(response)
+
+    elif message.content == 'Disconnetti':
+        try:
+            voice_client.disconnect()
+        except:
+            print('Could not disconnect from foice channel')
 
     elif message.content == 'Stupiscimi':
         quote = random.choice(list(soundboard.keys()))
