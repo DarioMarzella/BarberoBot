@@ -111,6 +111,10 @@ async def on_message(message):
         player.play(FFmpegPCMAudio(source='.'+soundboard[quote]['mp3'],
                     executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
 
+        while player.is_playing():
+            await sleep(180) #wait 3 minutes
+        await player.disconnect()
+
     else:
         for quote in soundboard:
             if message.content == quote:
