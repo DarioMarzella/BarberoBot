@@ -95,7 +95,7 @@ async def on_message(message):
             os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
 
         if message.author.voice == None:
-            await message.channel.send("No Voice Channel \nYou need to be in a voice channel to use this command!")
+            await message.channel.send("Nessun canale vocale identificato! \nDevi essere connesso/a ad un canale vocale perché io possa raccontarti qualcosa!")
             return
 
         channel = message.author.voice.channel
@@ -124,7 +124,7 @@ async def on_message(message):
                     os.popen('wget -P sounds/ https://www.spranga.xyz' + soundboard[quote]['mp3']).read()
 
                 if message.author.voice == None:
-                    await message.channel.send("No Voice Channel \nYou need to be in a voice channel to use this command!")
+                    await message.channel.send("Nessun canale vocale identificato! \nDevi essere connesso/a ad un canale vocale perché io possa raccontarti qualcosa!")
                     return
 
                 channel = message.author.voice.channel
