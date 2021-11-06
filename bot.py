@@ -112,7 +112,7 @@ async def on_message(message):
                     executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
 
         while player.is_playing():
-            await sleep(180) #wait 3 minutes
+            await sleep(1) #wait 3 minutes
         await player.disconnect()
 
     else:
@@ -143,7 +143,7 @@ async def on_message(message):
                             executable='/app/.heroku/activestorage-preview/usr/bin/ffmpeg'))
 
                 while player.is_playing():
-                    await sleep(180) #wait 3 minutes
+                    await sleep(1) #wait 3 minutes
                 await player.disconnect()
 
 
