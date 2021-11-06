@@ -7,7 +7,7 @@ import discord
 from dotenv import load_dotenv
 
 import random
-from time import sleep
+from asyncio import sleep
 
 #from spotipy.oauth2 import SpotifyClientCredentials
 #import spotipy
